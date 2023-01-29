@@ -33,4 +33,50 @@ const getTickets = asyncHandler(async(req, res) => {
   res.status(200).json(tickets)
 })
 
-module.exports = {createTicket, getTickets}
+// @desc Get user ticket
+// @route GET /api/tickets/:id
+// @access Private
+const getTicket = asyncHandler(async(req, res) => {
+  const ticket = await Ticket.findOne({id: req.params.id, user: req.user.id})
+
+  if (!ticket) {
+    res.status(404)
+    throw new Error('Ticket not found')
+  }
+
+  res.status(200).json(ticket)
+})
+
+// @desc Delete user ticket
+// @route DELETE /api/tickets/:id
+// @access Private
+const deleteTicket = asyncHandler(async(req, res) => {
+  const ticket = await Ticket.findOne({id: req.params.id, user: req.user.id})
+
+  if (!ticket) {
+    res.status(404)
+    throw new Error('Ticket not found')
+  }
+
+  await ticket.remove()
+
+  res.status(200).json({success: true})
+})
+
+// @desc Update user ticket
+// @route PUT /api/tickets/:id
+// @access Private
+const updateTicket = asyncHandler(async(req, res) => {
+  const ticket = await Ticket.findOne({id: req.params.id, user: req.user.id})
+
+  if (!ticket) {
+    res.status(404)
+    throw new Error('Ticket not found')
+  }
+
+  const updatedTicket = await Ticket.findByIdAndUpdate(req.params.id, req.body, {new: true})
+
+  res.status(200).json(updatedTicket)
+})
+
+module.exports = {createTicket, getTickets, getTicket, deleteTicket, updateTicket}
