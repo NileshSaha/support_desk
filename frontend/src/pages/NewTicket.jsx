@@ -3,10 +3,11 @@ import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import {createTicket, reset} from '../features/ticket/ticketSlice'
 import { useNavigate } from 'react-router-dom'
+import Spinner from '../components/Spinner'
 
 function NewTicket() {
   const {user} = useSelector((state) => state.auth)
-  const {isError, isSuccess, message, ticket} = useSelector(state => state.ticket)
+  const {isLoading, isError, isSuccess, message, ticket} = useSelector(state => state.ticket)
 
   const [name] = useState(user.name)
   const [email] = useState(user.email)
@@ -26,10 +27,14 @@ function NewTicket() {
       toast.error(message)
     }
     if (isSuccess || ticket) {
-      navigate('/view-tickets')
+      navigate('/tickets')
     }
     dispatch(reset())
   }, [isError, isSuccess, ticket, message, dispatch, navigate])
+
+  if (isLoading) {
+    return <Spinner />
+  }
 
   return (
     <div>
