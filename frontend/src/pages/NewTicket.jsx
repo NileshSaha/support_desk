@@ -1,20 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
+import {createTicket, reset} from '../features/ticket/ticketSlice'
+import { useNavigate } from 'react-router-dom'
 
 function NewTicket() {
   const {user} = useSelector((state) => state.auth)
+  const {isError, isSuccess, message, ticket} = useSelector(state => state.ticket)
 
   const [name] = useState(user.name)
   const [email] = useState(user.email)
   const [product, setProduct] = useState('iPhone')
   const [description, setDescription] = useState('')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const formData = {product, description}
-    // dispatch(newTicket(formData))
+    dispatch(createTicket(formData))
   }
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
+    }
+    if (isSuccess || ticket) {
+      navigate('/view-tickets')
+    }
+    dispatch(reset())
+  }, [isError, isSuccess, ticket, message, dispatch, navigate])
 
   return (
     <div>
@@ -46,7 +61,7 @@ function NewTicket() {
             <textarea type='text' className='form-control' id='description' placeholder='Enter description' value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
           </div>
           <div className='form-group'>
-            <button type='button' className='btn btn-block' >Submit</button>
+            <button type='submit' className='btn btn-block' >Submit</button>
           </div>
         </form>
       </section>
