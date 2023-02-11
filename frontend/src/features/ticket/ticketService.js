@@ -20,8 +20,13 @@ const updateTicket = async (ticket_id, payload, token) => {
 }
 
 // Get user tickets
-const getTickets = async (payload, token) => {
-  const {data} = await axios.get(API_URL, payload)
+const getTickets = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+  const {data} = await axios.get(API_URL, config)
   return data
 }
 

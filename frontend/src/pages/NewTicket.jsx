@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {createTicket, reset} from '../features/ticket/ticketSlice'
 import { useNavigate } from 'react-router-dom'
 import Spinner from '../components/Spinner'
+import { BackButon } from '../components/BackButon'
 
 function NewTicket() {
   const {user} = useSelector((state) => state.auth)
@@ -26,7 +27,8 @@ function NewTicket() {
     if (isError) {
       toast.error(message)
     }
-    if (isSuccess || ticket) {
+    if (isSuccess) {
+      dispatch(reset())
       navigate('/tickets')
     }
     dispatch(reset())
@@ -38,6 +40,7 @@ function NewTicket() {
 
   return (
     <div>
+      <BackButon url='/'/>
       <section className='heading'>
         <h1>Create New Ticket</h1>
         <p>Please fill out the form below</p>
