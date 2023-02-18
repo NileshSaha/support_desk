@@ -37,8 +37,7 @@ const getTickets = asyncHandler(async(req, res) => {
 // @route GET /api/tickets/:id
 // @access Private
 const getTicket = asyncHandler(async(req, res) => {
-  const ticket = await Ticket.findOne({id: req.params.id, user: req.user.id})
-
+  const ticket = await Ticket.findOne({_id: req.params.id, user: req.user.id})
   if (!ticket) {
     res.status(404)
     throw new Error('Ticket not found')
@@ -51,7 +50,7 @@ const getTicket = asyncHandler(async(req, res) => {
 // @route DELETE /api/tickets/:id
 // @access Private
 const deleteTicket = asyncHandler(async(req, res) => {
-  const ticket = await Ticket.findOne({id: req.params.id, user: req.user.id})
+  const ticket = await Ticket.findOne({_id: req.params.id, user: req.user.id})
 
   if (!ticket) {
     res.status(404)

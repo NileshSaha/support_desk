@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {toast} from 'react-toastify'
 import {getTickets, reset} from '../features/ticket/ticketSlice'
 import Spinner from '../components/Spinner'
-import { BackButon } from '../components/BackButon'
+import { BackButton } from '../components/BackButton'
 import TicketItem from '../components/TicketItem'
 
 
@@ -26,7 +26,7 @@ function Tickets() {
   
   return (
     <div>
-      <BackButon url='/'/>
+      <BackButton url='/'/>
       <div className='tickets'>
         <div className='ticket-headings'>
           <div>Date</div>
