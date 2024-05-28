@@ -44,6 +44,7 @@ services:
       - WDS_SOCKET_PORT=0
 
   nginx:
+    restart: always
     build:
       dockerfile: Dockerfile.dev
       context: ./nginx
