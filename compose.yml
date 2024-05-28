@@ -1,0 +1,57 @@
+version: "3"
+services:
+
+  mongo:
+    image: mongo
+    restart: on-failure
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    # volumes:
+    # - mongo:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: on-failure
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./backend
+    env_file: .env
+    volumes:
+      - /app/node_modules
+      - ./backend:/app
+    depends_on:
+      - mongo
+
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./frontend
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    environment:
+      - WDS_SOCKET_PORT=0
+
+  nginx:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    depends_on:
+      - api
+      - client
+    expose:
+      - 9095
+    ports:
+      - 9095:80
+

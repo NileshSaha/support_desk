@@ -5,10 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node backend/server.js",
-    "serve": "nodemon backend/server.js",
-    "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run serve\" \"npm run client\""
+    "start": "node server.js",
+    "serve": "nodemon server.js"
   },
   "author": "Nilesh Saha",
   "license": "MIT",
