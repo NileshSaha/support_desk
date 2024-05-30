@@ -3,12 +3,17 @@ services:
 
   mongo:
     image: mongo
+    container_name: mongodb
     restart: on-failure
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-    # volumes:
-    # - mongo:/data/db
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
+    networks:
+      - support_desk
 
   mongo-express:
     image: mongo-express
@@ -21,6 +26,8 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    networks:
+      - support_desk
 
   api:
     build:
@@ -32,6 +39,8 @@ services:
       - ./backend:/app
     depends_on:
       - mongo
+    networks:
+      - support_desk
 
   client:
     build:
@@ -42,6 +51,8 @@ services:
       - ./frontend:/app
     environment:
       - WDS_SOCKET_PORT=0
+    networks:
+      - support_desk
 
   nginx:
     restart: always
@@ -55,4 +66,12 @@ services:
       - 9095
     ports:
       - 9095:80
+    networks:
+      - support_desk
+
+volumes:
+  mongo:
+
+networks:
+  support_desk:
 

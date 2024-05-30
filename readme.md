@@ -20,3 +20,10 @@ all the commands required to setup the required dependencies and modules to run 
 ```sh
 make dev
 ```
+
+## To connect compass
+
+To connect mongo database using compass,
+```sh
+CONNECTION_STRING=mongodb://root:example@localhost:27017/
+```

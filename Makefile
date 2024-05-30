@@ -13,3 +13,6 @@ lg_app:
 
 lg_cl:
 	docker compose logs client --tail 100 --follow
+
+lg_nx:
+	docker compose logs nginx --tail 100 --follow
